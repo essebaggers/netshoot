@@ -1,0 +1,26 @@
+# https://github.com/nicolaka/netshoot
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: nginx-netshoot
+    labels:
+        app: nginx-netshoot
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: nginx-netshoot
+template:
+    metadata:
+    labels:
+        app: nginx-netshoot
+    spec:
+        containers:
+        - image: crzpiddev.azurecr.io/nginx:1.21
+          name: nginx
+          ports:
+              - containerPort: 80
+        - image: crzpiddev.azurecr.io/netshoot:latest
+          name: netshoot
+          command: ["/bin/bash"]
+          args: ["-c", "while true; do ping localhost; sleep 60;done"]
